@@ -1,21 +1,20 @@
 const itemList = new ItemList()
 const render = new HTMLRender()
 
-
 /* 
 	Load all Tasks from Server
 */
 function loadAllTask() {
-	console.log("M-am încărcat")
+	
+	// Retrieve User Specific Data
 	let user = document.getElementById('userdata')
 		if(user != null) {
 			SEND('','GET')
-			console.log(itemList)
+			
 			// Update Presentation
 			renderHTMLList()
 	}
 }
-
 
 function addTask(){
 	
@@ -28,9 +27,9 @@ function addTask(){
 		task.setText(taskHTML.value)	
 		taskHTML.value = ""
 		
-		// Save UserTask (Server OR Local)
-		if(!sendUserTask(task)){
-			itemList.addItem(task)
+		// Save UserTask
+		if(!sendUserTask(task)){ // on Server
+			itemList.addItem(task) // on Local 
 		}
 		
 		// Update Presentation
@@ -41,15 +40,15 @@ function addTask(){
 }
 
 function deleteTask(e){
+	
 	// Create Object to encapsulate HTML Task
 	let task = new Task()
 		task.setText(e.parentElement.previousSibling.firstChild.value)
 		task.setCheck(e.parentElement.previousSibling.previousSibling.firstChild.checked)
 		
-		
 	// Delete Task from List 
-	if(!deleteUserTask(task)){ // Delete on Server
-		itemList.deleteItem(task.getText())	// Delete on Local
+	if(!deleteUserTask(task)){ // on Server
+		itemList.deleteItem(task.getText())	// on Local
 	}
 	
 	// Update Presentation
@@ -59,7 +58,6 @@ function deleteTask(e){
 	currentTask.addEventListener ("animationend",function(){
 		renderHTMLList()
 	})
-
 }
 
 // TODO update on Server
@@ -112,31 +110,41 @@ function sendUserTask(task){
 		if(user != null){
 			// POST TASK & USER
 			SEND(JSON.stringify(task),'POST')
-			// Update presentation
-			renderHTMLList()
 			return true
 		}else{
 			return false
 		}
 }
 
+function addTaskEnter(event) {
+	if (event.keyCode === 13) {
+		event.preventDefault()
+		document.getElementById('enter').click()
+	}
+}
 
+function renderHTMLList(){
+	let myContainer = document.getElementById("container-list")
+	myContainer.innerHTML = render.renderItemList(itemList.getList())
+}
 /* 	
 	Request GET, POST, DELETE Task
 	Receive updated list of Tasks
 */
 function SEND(data, METHOD) {
+	
 	if (typeof (data) === 'string') {
-		
 		let xhttp = new XMLHttpRequest()
-		
 		itemList.clearList() // Reset local item list
 		
 		// Receive All Tasks Updated
 		xhttp.onload = function () {
-			console.log("Received:")
-			console.log(this.response)
+			
+			// All statements in this function are Thread Safe!
+			
+			// Encapsulate Response in local Task objects
 			let itemStringList = this.responseText
+			
 			if (this.readyState == 4) {
 				let itemArray = JSON.parse(itemStringList)
 				itemArray.forEach(json => {
@@ -146,33 +154,31 @@ function SEND(data, METHOD) {
 					itemList.addItem(task)
 				});
 			}
-			//console.log('itemList: '+itemList.getList())
+			
+			// Update Presentation
+			renderHTMLList()
 		}
 		
-		
 		// Send One Task
+		let contentOperation = ''
+		if(METHOD == 'DELETE'){
+			METHOD = 'POST'
+			contentOperation = 'trash'
+			
+		}
+		console.log(METHOD)
 		xhttp.open(METHOD, "http://localhost:8080/WebTodoList/Tasks", true)
 		xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-		if(METHOD == 'DELETE' || METHOD == 'POST'){
+		xhttp.setRequestHeader('Content-Operation',contentOperation)
+		
+		if(METHOD == 'POST'){
 			// Debug Send
-			console.log("SEND:"+data)
+			console.log(data)
 			xhttp.send(data)	
 		}else{
 			xhttp.send()	
 		}
 	} else {
-		console.log("Data is not of type string! No data sent to server!")
+		console.error("Data is not of type string! No data sent to server!")
 	}
-}
-
-function addTaskEnter(event) {
-	if (event.keyCode === 13) {
-		event.preventDefault()
-		document.getElementById('enter').click()
-	}
-}
-function renderHTMLList(){
-	let myContainer = document.getElementById("container-list")
-	myContainer.innerHTML = render.renderItemList(itemList.getList())
-	//console.log(myContainer)
 }

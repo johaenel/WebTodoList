@@ -13,8 +13,7 @@ public class UserDAO {
 	private final static String COLUMN_PASSWORD = "password";
 
 	private static boolean isUser(Connection connection, String first_name, String last_name) {
-		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_FIRST_NAME + "= ?" + "  AND " + COLUMN_LAST_NAME
-				+ "= ?";
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_FIRST_NAME + "= ?" + "  AND " + COLUMN_LAST_NAME + "= ?";
 		try {
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, first_name);

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
+
 import model.Task;
 import model.User;
 import model.repository.TaskDAO;
@@ -19,45 +21,48 @@ import java.util.ArrayList;
 @WebServlet("/Tasks")
 public class TaskServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Default constructor.
-	 */
-	public TaskServlet() {
-
-	}
-	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doDelete(req, resp);
-	}
-
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {		
+		System.out.println("-----------------------");
 		//Get the session Object
 		HttpSession session = request.getSession();
+		
 		Object object = session.getAttribute("user");
-		User user = null;
+		
+		
 		if(object != null) {
 			if (object instanceof User) {
 				
 				/* REQUEST */
 
 				// Cast User
-				user = (User) object;
+				User user = (User) object;
 				
 				// Encapsulate Task
 				String json = getJsonFromRequest(request);
 				Task task = deserializeTask(json);
 				
 				// Update DB: INSERT || UPDATE
-				if(task !=null)
-					TaskDAO.updateDBTasks(task, user);
+				if(task !=null) {
+					TaskDAO.updateTask(task, user);
+				}
 				
+				// Update DB: DELETE
+				if(task != null) {
+					System.out.println(task.getText());
+					String content = request.getHeader("content-operation");
+					System.out.println(content);
+					String res = "trash";
+					if(content.equals(res)) {
+						System.out.println("I am here");
+								TaskDAO.deleteTask(task,user);
+					}
+				}
 				/* RESPONSE */
 				
 				// Send All Task Objects 
-				ArrayList<Task> tasks = TaskDAO.queryDBTasks(user);
+				ArrayList<Task> tasks = TaskDAO.queryAll(user);
 				ArrayList<String> gsonArray = serializeTasks(tasks);
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
