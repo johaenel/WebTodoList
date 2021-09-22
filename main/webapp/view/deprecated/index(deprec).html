@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listă de sarcini</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!--Iconset-->
+<script src='https://kit.fontawesome.com/160dc8ba89.js'
+	crossorigin='anonymous'></script>
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+	type="text/javascript"></script>
+<!-- Popper JS -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"
+	type="text/javascript"></script>
+<!-- Bootstrap JS -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+	type="text/javascript"></script>
+<!--Local JS-->
+<link rel="stylesheet" href="../format/index.css">
+<script src="../scripts/objects.js" type="text/javascript"></script>
+<script src="../scripts/index.js" type="text/javascript"></script>
+<script src="../scripts/stil.js" type="text/javascript"></script>
+</head>
+<body onload="loadAllTask()">
+	<div class="p-4 container">
+		<div class="header">
+			<span id="userdata">Johann Malaki</span>
+			<button type="button" class="btn btn-primary"
+				onclick="document.location='pages/registration.html'">
+				Deconectare <i class="fas fa-sign-out-alt"></i>
+			</button>
+			<!-- 			<button type="button" class="btn btn-primary" -->
+			<!-- 				onclick="document.location='pages/registration.html'"> -->
+			<!-- 				Înregistrare <i class="fas fa-file-signature"></i> -->
+			<!-- 			</button> -->
+			<!-- 			<button type="button" class="btn btn-primary" -->
+			<!-- 				onclick="document.location='~/pages/authentication.html'"> -->
+			<!-- 				Autentificare <i class="fas fa-sign-in-alt"></i> -->
+			<!-- 			</button> -->
+		</div>
+	</div>
+	<div class="p-4 container">
+		<h1 class="text-center">Listă de sarcini</h1>
+		<form action="">
+			<div class="border">
+				<div class="input-group">
+					<input id="task" type="text" placeholder="Introduceți o sarcină…"
+						value="" onkeydown="addTaskEnter(event)">
+					<button id="enter" type="button" title="Save" value="➕"
+						onclick="addTask()">
+						<i class="fas fa-plus"></i>
+					</button>
+				</div>
+			</div>
+		</form>
+		<div id="container-list" class="pb-4">
+			<!-- 			<table class="table" id="item">
+				<tr id="test">
+					<td style="width: 2%;"><input id="task-" type="checkbox"
+						onchange="setChecked(this)"></td>
+					<td><input type="text" id="item" value="test"
+						onfocus="this.oldvalue=this.value"
+						onchange="updateTask(this.value,this.oldvalue)"></td>
+					<td style="width: 10%;" id="delete"><i id="trash"
+						class="fas fa-trash-alt" style="font-size: large"
+						onclick="deleteAnime();"></i></td>
+				</tr>
+			</table> -->
+		</div>
+	</div>
+</body>
+</html>
