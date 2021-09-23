@@ -1,13 +1,15 @@
 package model;
 
 public class Task{
-	String text;
-	boolean check;
+	private String text;
+	private boolean check;
+	private int id;
 	
-	public Task(String name, boolean checked) {
+	public Task(String text, boolean check, int id) {
 		super();
-		this.text = name;
-		this.check = checked;
+		this.text = text;
+		this.check = check;
+		this.id = id;
 	}
 
 
@@ -28,15 +30,26 @@ public class Task{
 	public void setCheck(boolean checked) {
 		this.check = checked;
 	}
+	
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	@Override
 	public String toString() {
 		String json = "{"
 				+ "name: "+this.getText()+" "
 				+ "check: "+this.isCheck()+" "
+				+ "id: "+this.getId()
 				+"}";
 		
 		return json;
-	}   
+	}
 }
 

@@ -1,46 +1,55 @@
 class ItemList {
-    constructor() {
+    constructor() 
+	{
         this.listItems = []
     }
-    
-    addItem(item) {
+    addItem(task) 
+	{
 		// Add on top
-        this.listItems.unshift(item)
+        this.listItems.unshift(task)
     }
-
-    fillList(array) {
-        try {
-            this.listItems = array
-        } catch (error) {
-            console.error("Input is not array")
-            console.error(error)
-        }
-
-    }
-	
-    getList() {
+    getList() 
+	{
         return this.listItems
     }
-	getOneItem(index){
-		return this.listItems[index]
-	}
-    clearList() {
-        return this.listItems.splice(0, this.listItems.length)
-    }
-	
-	deleteItem(itemText){
+	deleteItem(taskText,taskCheck)
+	{
 		for (let index = 0; index < this.listItems.length; index++) { 
-            if (this.listItems[index].getText() == itemText)
-                this.listItems.splice(index,1)
+            if (this.listItems[index].getText() == taskText)
+				if (this.listItems[index].isCheck() == taskCheck)
+                	this.listItems.splice(index,1)
         }
 	}
-	
-    getItem(itemText) {
+    getItem(taskText) 
+	{
         for (let index = 0; index < this.listItems.length; index++) {
             const element = this.listItems[index]
-            if (element.getText() == itemText)
+            if (element.getText() == taskText)
                 return element
         }
+    }
+	getItem(taskText,taskCheck)
+	{
+        for (let index = 0; index < this.listItems.length; index++) {
+            const element = this.listItems[index]
+            if (element.getText() == taskText)
+				if (element.isCheck() == taskCheck)
+                		return element
+        }
+    }
+	setItem(taskText, task)
+	{
+		for (let index = 0; index < this.listItems.length; index++) {
+            const element = this.listItems[index]
+            if (element.getText() == taskText)
+				element.setText(task.getText())
+				element.setCheck(task.isCheck())
+   				return true
+        }
+	}
+    clearList() 
+	{
+        return this.listItems.splice(0, this.listItems.length)
     }
 }
 
@@ -48,6 +57,7 @@ class Task {
     constructor() {
         this.text = ""
         this.check = false
+		this.id = 0
     }
 
     setText(text) {
@@ -57,7 +67,10 @@ class Task {
     setCheck(check) {
         this.check = check
     }
-
+	setStatus(status, value)
+	{
+		this.status.set(status,value)
+	}
     getText() {
         return this.text
     }
@@ -65,9 +78,15 @@ class Task {
     isCheck() {
         return this.check
     }
-    fromJson(text, check) {
+	getId()
+	{
+		return this.id
+	}
+	
+    fromJson(text, check,id) {
         this.text = text
         this.check = check
+		this.id=id
     }
 }
 
@@ -88,12 +107,10 @@ class HTMLRender {
                 checked = ""
             }
             /* 
-				<td id="check"><input id="task-" count  type="checkbox" onchange="updateTaskCheck(this)" checked ></td>
-				<td><input type="text" id="item" value="task.getText()" onfocus="this.oldvalue=this.value" onchange="updateTaskText(this.value,this.oldvalue)"></td>  
-            	<td id="delete"><i id="trash" class="fas fa-trash-alt" style="font-size: large" onclick="deleteTask(this)"></i></td>
+				Ref. index(deprec).html
 			*/
             let input = "<td id=\"check\"><input id=\"task-" + count +" "+"\"type=\"checkbox\" onchange=\"updateTaskCheck(this)\""+" "+checked+"></td>" +
-						"<td><input type=\"text\" id=\"item\" value=\""+task.getText()+"\" onfocus=\"this.oldvalue=this.value\" onchange=\"updateTaskText(this.value,this.oldvalue)\"></td>" +
+						"<td><input type=\"text\" id=\"item\" value=\""+task.getText()+"\" onfocus=\"this.oldvalue=this.value\" onchange=\"updateTaskText(this.oldvalue,this)\"></td>" +
                         "<td id=\"delete\"><i id=\"trash\" class=\"fas fa-trash-alt\" style=\"font-size: large\" onclick=\"deleteTask(this)\"></i></td>"
 
                     if(task.isCheck()){

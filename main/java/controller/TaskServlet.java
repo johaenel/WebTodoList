@@ -43,22 +43,20 @@ public class TaskServlet extends HttpServlet {
 				String json = getJsonFromRequest(request);
 				Task task = deserializeTask(json);
 				
-				// Update DB: INSERT || UPDATE
-				if(task !=null) {
-					TaskDAO.updateTask(task, user);
-				}
 				
-				// Update DB: DELETE
-				if(task != null) {
-					System.out.println(task.getText());
+				if(task !=null) {
+					System.out.println(task.getId()+task.getText()+task.isCheck());
+					// INSERT || UPDATE
+					TaskDAO.updateTask(task, user);
+				
+					// DELETE
 					String content = request.getHeader("content-operation");
-					System.out.println(content);
-					String res = "trash";
-					if(content.equals(res)) {
-						System.out.println("I am here");
-								TaskDAO.deleteTask(task,user);
+					if(content.equals("trash")) {
+						TaskDAO.deleteTask(task,user);
 					}
 				}
+				
+				
 				/* RESPONSE */
 				
 				// Send All Task Objects 
