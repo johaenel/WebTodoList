@@ -12,3 +12,4 @@
 --DESC todos;
 --DELETE FROM todos where userID IS NULL;
 SELECT * FROM todos where userID = 1;
+
