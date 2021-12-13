@@ -24,27 +24,27 @@
 	<div class=" pb-5 container">
 		<form action="/WebTodoList/Registration" method="post">
 			<div class=form-group>
-				<label for="firstName">Prenume:<span class="asterix">*</span></label>
-				<input type="text" name="firstName" class=form-control required>
+				<label for=inpFirst>Prenume:<span class="asterix">*</span></label>
+				<input id="inpFirst" type="text" name="firstName" class=form-control required>
 			</div>
 			<div class=form-group>
-				<label for="lastName">Nume:<span class="asterix">*</span></label> <input
-					type="text" name="lastName" class=form-control required>
+				<label for=inpLast>Nume:<span class="asterix">*</span></label>
+				<input id="inpLast" type="text" name="lastName" class=form-control required>
 			</div>
 			<div class=form-group id="userName">
 				<label for="userName">Definește un pseudonim:<span
-					class="asterix">*</span> <span></span></label> <input type="text"
-					name="userName" class=form-control
+					class="asterix">*</span> <span></span></label>
+				<input type="text" name="userName" class=form-control
 					placeholder="Numele de utilizator…" required>
 			</div>
 			<div class=form-group>
 				<label for="password">Definește parola:<span class="asterix">*</span></label>
-				<input type="password" name="password" id="define"
+				<input id="password" type="password" name="password" id="define"
 					class=form-control required>
 			</div>
 			<div class=form-group>
 				<label for="passwordConfirm">Confirmă parola:<span
-					class="asterix">*</span> <span></span></label> <input type="password"
+					class="asterix">*</span> <span></span></label> <input id="passwordConfirm" type="password"
 					name="passwordConfirm" id="confirm" class=form-control required>
 			</div>
 			<input type="submit">

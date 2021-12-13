@@ -1,6 +1,7 @@
 package controller;
 
-import java.io.IOException;
+import model.User;
+import model.repository.UserDAO;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,12 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.User;
-import model.repository.UserDAO;
+import java.io.IOException;
 
-/**
- * Servlet implementation class AuthenticationServlet
- */
+
 @WebServlet("/Authentication")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -29,29 +27,19 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse 
-			response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		// Get Credentials from request
+		// Preia datele de pe pagină
 		String user_name = request.getParameter("userName");
 		String password = request.getParameter("password");
-		
-		// Encapsulate Data from Database
 		User user = UserDAO.logIn(user_name, password);
+		HttpRequestResponseProccesor proccesor = new HttpRequestResponseProccesor(request, response);
 		
-		// Create Process Data Object
-		HttpRequestResponseProccesor proccesor = 
-				new HttpRequestResponseProccesor(request, response);
-		
-		// Save Data Process Data to Session
-		// Route Result
 		if (user != null) {
 			proccesor.saveObjToSession("user", user);
 			proccesor.routeToDispatcher(Dispatcher.DEFAULT);
 		} else {
-			String message = "Regretăm, însă datele de autentificare nu "
-					+ "sunt valide!";
+			String message = "Regretăm, însă datele de autentificare nu sunt valide!";
 			String domclass = "alert alert-danger";
 			request.setAttribute("message", message);
 			request.setAttribute("domclass", domclass);
@@ -60,27 +48,20 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, 
-	 * HttpServletResponse
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, 
-			HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
 	}
 }
-/*
- * fiecare metodă are o responsabilitate!!!
- * este independentă de context */
 
 class HttpRequestResponseProccesor {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	HttpSession session;
 	
-	public HttpRequestResponseProccesor(HttpServletRequest request, 
-			HttpServletResponse response) {
+	public HttpRequestResponseProccesor(HttpServletRequest request, HttpServletResponse response) {
 		super();
 		this.request = request;
 		this.response = response;
@@ -92,14 +73,11 @@ class HttpRequestResponseProccesor {
 		//key not empty
 		// check session not null
 		
-		session = request.getSession();
-		session.setAttribute(objKey, obj);
+		HttpSession sessiont = request.getSession();
+		sessiont.setAttribute(objKey, obj);
 	}
 	
-	
-	
-	public void routeToDispatcher(String route) throws ServletException, 
-	IOException {
+	public void routeToDispatcher(String route) throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher(route);
 		dispatcher.forward(request, response);
 	}

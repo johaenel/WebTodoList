@@ -1,55 +1,39 @@
 package model;
 
 public class Task{
-	private String text;
-	private boolean check;
-	private int id;
+	String name;
+	boolean check;
 	
-	public Task(String text, boolean check, int id) {
+	public Task(String name, boolean checked) {
 		super();
-		this.text = text;
-		this.check = check;
-		this.id = id;
+		this.name = name;
+		this.check = checked;
 	}
 
-
-	public String getText() {
-		return text;
+	public String getName() {
+		return name;
 	}
 
-
-	public void setText(String text) {
-		this.text = text;
+	public void setName(String name) {
+		this.name = name;
 	}
-
 
 	public boolean isCheck() {
 		return check;
 	}
 
-	public void setCheck(boolean checked) {
+	public void setChecked(boolean checked) {
 		this.check = checked;
-	}
-	
-	
-	public int getId() {
-		return id;
-	}
-
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	@Override
 	public String toString() {
 		String json = "{"
-				+ "name: "+this.getText()+" "
+				+ "name: "+this.getName()+" "
 				+ "check: "+this.isCheck()+" "
-				+ "id: "+this.getId()
 				+"}";
 		
 		return json;
-	}
+	}   
 }
 
