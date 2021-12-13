@@ -14,7 +14,7 @@ public class DBConnector {
 	private final static String SERVER_NAME="localhost";
 	private final static int PORT = 3306;
 	private final static String ENCODING="characterEncoding=UTF-8";
-	private final static String DATABASE="tasks";
+	private final static String DATABASE="todo_list";
 	
 	
 	

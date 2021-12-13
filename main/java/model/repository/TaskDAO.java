@@ -13,7 +13,7 @@ import model.User;
 public class TaskDAO {
 
 	// SQL TABLE Data
-	private final static String TABLE_NAME = "todos";
+	private final static String TABLE_NAME = "tasks";
 	private final static String COLUMN_TEXT = "name";
 	private final static String COLUMN_CHECKED = "checked";
 	private final static String COLUMN_TASK_ID = "taskID";
